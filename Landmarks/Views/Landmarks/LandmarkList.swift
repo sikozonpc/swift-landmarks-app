@@ -1,10 +1,11 @@
 import SwiftUI
 
 struct LandmarkList: View {
+    @EnvironmentObject var modelData: ModelData
     @State private var showFavoritesOnly = false
     
     var filteredLandmarks: [Landmark] {
-        landmarks.filter { landmark in
+        modelData.landmarks.filter { landmark in
             (!showFavoritesOnly || landmark.isFavorite)
         }
     }
@@ -32,12 +33,13 @@ struct LandmarkList: View {
 struct LandmarkList_Previews: PreviewProvider {
     static var previews: some View {
         ForEach([
-            "iPhone SE (3rd generation)",
-            "iPhone 14 Pro Max",
             "iPhone 14",
             "iPhone 14 Pro",
+            "iPhone 14 Pro Max",
+            "iPhone SE (3rd generation)"
         ], id: \.self) { deviceName in
             LandmarkList()
+                .environmentObject(ModelData())
                 .previewDevice(PreviewDevice(rawValue: deviceName))
                 .previewDisplayName(deviceName)
         }
